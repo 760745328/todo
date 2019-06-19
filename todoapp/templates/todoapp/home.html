@@ -1,4 +1,3 @@
-
 {% extends 'todoapp/base.html' %}
 
 {% block 标题 %}
@@ -7,57 +6,67 @@
 {% block 代办高亮 %}active{% endblock %}
 {% block 主体 %}
     <main role="main" class="container">
-      <br>
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead class="thead-light">
-            <tr>
-              <th>序号</th>
-              <th>待办事项</th>
-              <th>编辑</th>
-              <th>划掉</th>
-              <th>删除</th>
-            </tr>
-          </thead>
-          <tbody class="no-underline">
-          {% for things in 清单 %}
-              {% if things.已完成 %}
-                  <tr class="table-dark">
-                      <th class="text-dark" scope="row">4</th>
-                      <td class="text-dark" id="line-through">去超市</td>
-                      <td class="text-secondary">不可编辑</td>
-                      <td><a class="text-info" href="#">撤销</a></td>
-                       <td><a class="text-danger" href="#">删除</a></td>
-                    </tr>
-              {% else %}
-               <tr>
-              <th scope="row">1</th>
-              <td>{{ things.待办事项 }}</td>
-              <td><a class="text-success" href="{% url 'todoapp:编辑' %}">编辑</a></td>
-              <td><a href="#">划掉</a></td>
-              <td><a class="text-info" href="{% url 'todoapp:删除' forloop.counter %}">删除</a></td>
-            </tr>
-              {% endif %}
-          {% endfor %}
+        <br>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th>序号</th>
+                    <th>待办事项</th>
+                    <th>编辑</th>
+                    <th>划掉</th>
+                    <th>删除</th>
+                </tr>
+                </thead>
+                <tbody class="no-underline">
+                {% for things in 清单 %}
+                    {% if things.已完成 %}
+                        <tr class="table-dark">
+                            <th class="text-dark" scope="row">4</th>
+                            <td class="text-dark" id="line-through">去超市</td>
+                            <td class="text-secondary">不可编辑</td>
+                            <td><a class="text-info" href="#">撤销</a></td>
+                            <td>
+                                <form action="{% url 'todoapp:删除' forloop.counter %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger" type="submit">删除</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>{{ things.待办事项 }}</td>
+                            <td><a class="text-success" href="{% url 'todoapp:编辑' forloop.counter %}">编辑</a></td>
+                            <td><a href="#">划掉</a></td>
+                            <td>
+                                  <form action="{% url 'todoapp:删除' forloop.counter %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger" >删除</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
 
-           {
-{#            <tr>#}
-{#              <th scope="row">2</th>#}
-{#              <td>看一会小说</td>#}
-{#              <td><a class="text-success" href="#">编辑</a></td>#}
-{#              <td><a href="#">划掉</a></td>#}
-{#              <td><a class="text-info" href="#">删除</a></td>#}
-{#            </tr>#}
-{#            <tr>#}
-{#              <th scope="row">3</th>#}
-{#              <td>散散步</td>#}
-{#              <td><a class="text-success" href="#">编辑</a></td>#}
-{#              <td><a href="#">划掉</a></td>#}
-{#              <td><a class="text-info" href="#">删除</a></td>#}
-{#            </tr>#}
-{#           {% endcomment %}#}
-          </tbody>
-        </table>
-      </div>
+                {
+                {#            <tr>#}
+                {#              <th scope="row">2</th>#}
+                {#              <td>看一会小说</td>#}
+                {#              <td><a class="text-success" href="#">编辑</a></td>#}
+                {#              <td><a href="#">划掉</a></td>#}
+                {#              <td><a class="text-info" href="#">删除</a></td>#}
+                {#            </tr>#}
+                {#            <tr>#}
+                {#              <th scope="row">3</th>#}
+                {#              <td>散散步</td>#}
+                {#              <td><a class="text-success" href="#">编辑</a></td>#}
+                {#              <td><a href="#">划掉</a></td>#}
+                {#              <td><a class="text-info" href="#">删除</a></td>#}
+                {#            </tr>#}
+                {#           {% endcomment %}#}
+                </tbody>
+            </table>
+        </div>
     </main>
 {% endblock %}
