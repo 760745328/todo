@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 
 # Create your views here.
 
 lst = [
-    {'待办事项': '吃饭', '已完成': False},
+    {'待办事项': '吃饭', '已完成': True},
     {'待办事项': '逛街', '已完成': False}
 ]
 
@@ -22,3 +22,8 @@ def edit(request):
     return render(request, 'todoapp/edit.html')
 def about(request):
     return render(request, 'todoapp/about.html')
+def delete(request, forloop_counter):
+    global lst
+    forloop_counter = int(forloop_counter) - 1
+    lst.pop(forloop_counter)
+    return redirect('todoapp:主页')
